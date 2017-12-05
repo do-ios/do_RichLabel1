@@ -506,6 +506,15 @@
 }
 - (void) OnPropertiesChanged: (NSMutableDictionary*) _changedValues
 {
+    //height为-1时不可以滚动，固定高度时可以滚动
+    if ([_changedValues objectForKey:@"height"]) {
+        float heigth = [[_changedValues objectForKey:@"height"] floatValue];
+        if (heigth <= 0) {
+            self.layoutManager.allowsNonContiguousLayout = NO;
+        } else {
+            self.layoutManager.allowsNonContiguousLayout = YES;
+        }
+    }
     //_model的属性进行修改，同时调用self的对应的属性方法，修改视图
     [doUIModuleHelper HandleViewProperChanged: self :_model : _changedValues ];
 }
